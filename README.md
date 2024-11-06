@@ -24,7 +24,14 @@ This project automates the control of light, heat, and humidity within a greenho
  - Lamp construction
  - Shade cloth roll-up construction
 
-# BOM
+# Software
+ - The only software used is WLED for controlling our LED's.
+ - he
+ - the rest of the software is provided by the other teams
+
+# Bom list
+
+# Schematic
 
 
 
