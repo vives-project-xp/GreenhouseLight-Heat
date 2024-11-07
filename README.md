@@ -15,7 +15,7 @@ This project automates the control of light, heat, and humidity within a greenho
  - Humidity Management: Monitors humidity levels and reduces excess moisture by opening windows.
  - All LEDs, heaters, and actuators run on standard power (230V), making installation straightforward and accessible without specialized wiring.
 
-# hardware
+# Hardware
  - SK6812 RGBW LED Strip 5m
  - ESP32-C3-DevKitC-02
  - converter(?)
@@ -23,11 +23,17 @@ This project automates the control of light, heat, and humidity within a greenho
  - Shade cloth
  - Lamp construction
  - Shade cloth roll-up construction
- - 3d prints
+
+# 3D Prints
+
+ - Plate for lamps 
+ ![Plate for lamps](./resources/images/LampPlaat.png)
+ - Corner for attaching shade cloth (?) 
+ - Housing for weight (weight = soil) (?)
+ - Electric motor attachments (?)
 
 # Software
  - The only software used is WLED for controlling our LED's.
- - he
  - the rest of the software is provided by the other teams
 
 # Bom list
