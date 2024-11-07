@@ -2,7 +2,7 @@
 ![Project Picture AI](./resources/images/ai_image.jpg)
 
 # Introduction
-Here we are controlling the light, heat and humidity inside a greenhouse. This way we optimise plant growth all year round, day in and out. We control the light by shading the plants, or adding blue and red LED's. The heat by adding warmth trough electric heaters, or cool it down by opening window(s). And we also want to decrease humidity by opening those same window(s). All of these factors are controlled by the by sensors made by the GreenhouseSensoring team.
+This project automates the control of light, heat, and humidity within a greenhouse to optimize plant growth year-round. Through a network of sensors and actuators, the system continuously monitors and adjusts environmental conditions to create the ideal environment for plants.
 
 # The team
  - Thibaut Schroyens (SCRUM Master)
@@ -10,6 +10,10 @@ Here we are controlling the light, heat and humidity inside a greenhouse. This w
  - Joren Vandewalle
 
 # features
+ - Light Control: Adjusts lighting with blue and red LEDs to stimulate plant growth and manages shading to prevent overexposure.
+ - Temperature Regulation: Monitors greenhouse temperature, controlling electric heaters to add warmth or opening windows for cooling.
+ - Humidity Management: Monitors humidity levels and reduces excess moisture by opening windows.
+ - All LEDs, heaters, and actuators run on standard power (230V), making installation straightforward and accessible without specialized wiring.
 
 # Hardware
  - SK6812 RGBW LED Strip 5m
@@ -19,8 +23,18 @@ Here we are controlling the light, heat and humidity inside a greenhouse. This w
  - Shade cloth
  - Lamp construction
  - Shade cloth roll-up construction
+ - 3d prints
 
-# BOM
+# Software
+ - The only software used is WLED for controlling our LED's.
+ - he
+ - the rest of the software is provided by the other teams
+
+# Bom list
+
+# Schematic
+
+![image](https://github.com/user-attachments/assets/6f633a80-4cf7-4bab-a945-05415624191f)
 
 
 
