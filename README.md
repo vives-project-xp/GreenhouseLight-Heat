@@ -35,10 +35,3 @@ This project automates the control of light, heat, and humidity within a greenho
 # Schematic
 
 ![image](https://github.com/user-attachments/assets/6f633a80-4cf7-4bab-a945-05415624191f)
-
-
-
-
-
-
-
