@@ -27,7 +27,6 @@ This project automates the control of light, heat, and humidity within a greenho
 
 # Software
  - The only software used is WLED for controlling our LED's.
- - he
  - the rest of the software is provided by the other teams
 
 # Bom list
