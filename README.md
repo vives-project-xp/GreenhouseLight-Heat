@@ -30,6 +30,7 @@ This project automates the control of light, heat, and humidity within a greenho
  ![Plate for lamps](./resources/images/LampPlaat.png)
  - Corner for attaching shade cloth (?) 
  - Housing for weight (weight = soil) (?)
+  ![Plate for lamps](./resources/images/WeightForDirt.png)
  - Electric motor attachments (?)
 
 # Software
