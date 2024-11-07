@@ -23,7 +23,13 @@ This project automates the control of light, heat, and humidity within a greenho
  - Shade cloth
  - Lamp construction
  - Shade cloth roll-up construction
- - 3d prints
+
+# 3D Prints
+
+ - Plate for lamps 
+ - Corner for attaching shade cloth (?) 
+ - Housing for weight (weight = soil) (?)
+ - Electric motor attachments (?)
 
 # Software
  - The only software used is WLED for controlling our LED's.
