@@ -27,6 +27,7 @@ This project automates the control of light, heat, and humidity within a greenho
 # 3D Prints
 
  - Plate for lamps 
+ ![Plate for lamps](./resources/images/LampPlaat.png)
  - Corner for attaching shade cloth (?) 
  - Housing for weight (weight = soil) (?)
  - Electric motor attachments (?)
