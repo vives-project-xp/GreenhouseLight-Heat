@@ -11,7 +11,7 @@ Here we are controlling the light, heat and humidity inside a greenhouse. This w
 
 # features
 
-# hardware
+# Hardware
  - SK6812 RGBW LED Strip 5m
  - ESP32-C3-DevKitC-02
  - converter(?)
