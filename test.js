@@ -48,6 +48,6 @@ async function sendWLEDRequest(data) {
 }
 
 // Example usage:
-setBrightness(255);
-
+setBrightness(10);
+toggleLights(true);
 setColor([255,0,255]); 
