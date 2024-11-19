@@ -16,7 +16,6 @@ This project automates the control of light and heat within a greenhouse to opti
 
 - Light Control: Adjusts lighting with blue and red LEDs to stimulate plant growth and manages shading to prevent overexposure.
 - Temperature Regulation: Monitors greenhouse temperature, controlling electric heaters to add warmth or opening windows for cooling.
-- Humidity Management: Monitors humidity levels and reduces excess moisture by opening windows.
 - All LEDs, heaters, and actuators run on standard power (230V), making installation straightforward and accessible without specialized wiring.
 
 # Hardware
