@@ -1,5 +1,27 @@
 // WLED hostname
-const wledHostname = "http://lightandheat.local/json/state";
+ const wledHostname = "http://lightandheat.local/json/state";
+
+// Sensor data
+const sensorData = 0;
+
+// Function to get give light data based on sensor data
+function getLightData(sensorData) {
+    // Define light data
+    let lightData = {
+        "brightness": 0,
+        "state": false,
+        "color": [0,0,0]
+    };
+
+    // Set light data based on sensor data
+    if (sensorData > 0) {
+        lightData.brightness = 255;
+        lightData.state = true;
+        lightData.color = [255,0,255];
+    }
+
+    return lightData;
+}
 
 // Function to set brightness
 async function setBrightness(brightness) {
@@ -37,12 +59,13 @@ async function sendWLEDRequest(data) {
             body: JSON.stringify(data)
         });
         
+        // response.ok in loop normaal
         if (response.ok) {
             console.log("Command sent successfully:", data);
         } else {
             console.error("Error sending command:", response.status);
         }
-    } catch (error) {
+    }catch (error) {
         console.error("Failed to send command:", error);
     }
 }
@@ -51,3 +74,5 @@ async function sendWLEDRequest(data) {
 setBrightness(10);
 toggleLights(true);
 setColor([255,0,255]); 
+
+getLightData(0);

@@ -4,7 +4,7 @@
 
 # Introduction
 
-This project automates the control of light, heat, and humidity within a greenhouse to optimize plant growth year-round. Through a network of sensors and actuators, the system continuously monitors and adjusts environmental conditions to create the ideal environment for plants.
+This project automates the control of light and heat within a greenhouse to optimize plant growth year-round. Through a network of sensors and actuators, the system continuously monitors and adjusts environmental conditions to create the ideal environment for plants.
 
 # The team
 
