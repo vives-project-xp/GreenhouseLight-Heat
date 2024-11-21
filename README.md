@@ -20,10 +20,14 @@ This project automates the control of light and heat within a greenhouse to opti
 
 # Hardware
 
-- SK6812 RGBW LED Strip 5m
-- ESP32-C3-DevKitC-02
-- converter(?)
-- Electric motor(?)
+- ledstrip: SK6812 RGBW LED Strip 5m
+- esp32: ESP32-C3-DevKitC-02
+- voedingen: Mean Well Rs-50-5 (5V-10A) + Mean Well UHP-200R-36 (36V-5.6A)
+- stappenmotor: Joy-it Nema23-02 (2.5A - 1.2Nm)
+- level shifter: Sparkfun Logic converter, bi-directional
+- verwarmingselement: VONROC heater marsili compact -2000W
+- Smart plug : Wiz Smart plug
+- stappenmotordriver: Joy-it SBC-MD-TB6600
 - Shade cloth
 - Lamp construction
 - Shade cloth roll-up construction
