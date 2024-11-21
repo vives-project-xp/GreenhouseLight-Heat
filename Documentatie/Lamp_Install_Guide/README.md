@@ -22,8 +22,18 @@ Next, solder the segments together. Make sure to connect the following:
 
 
 This will ensure that the LED strip is properly configured for your project.
+
 This should be the final result:
 
 <p align="center">
   <img src="./images/Leds_Fully_Connected.jpg" alt="Leds Connector" width="600" height="600"/>
 </p>
+
+## Step 2: Connect the LED strip to the ESP32
+
+### Electrical schema 
+
+<p align="center">
+  <img src=".././images/Wiring_architecture_diagram.png" alt="Leds Connector" width="600" height="600"/>
+</p>
+
