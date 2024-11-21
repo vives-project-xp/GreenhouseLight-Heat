@@ -6,7 +6,7 @@ This is the documentation page. This is the place u need to be if u want to know
 ## Installation
 
 1. **Install the LED strip/Lamp:** this can all be found here (not yet)
-2. **Install shade Shade cloths:** how to install them can be found here [here](./StappenMotor_Instellen/README.md).
+2. **Install shade Shade cloths:** how to install them can be found here [here](./Shade_cloths_Install_Guide/README.md).
 3. **Install heater:** if u want to know how we installed the heater that can be found hre (not yet)
 
 ## Bill of Material
