@@ -15,8 +15,15 @@ Next, solder the segments together. Make sure to connect the following:
 - **Data (Date)** to **Data Input (Din)** 
 - **Do (Data Output)** to **Din (Data Input)** 
 - **GND** to **GND** (Ground)
-- ![Leds Connector](./images/Leds_Connector.jpg)
+
+<p align="center">
+  <img src="./images/Leds_Connector.jpg" alt="Leds Connector" width="300" height="300"/>
+</p>
+
 
 This will ensure that the LED strip is properly configured for your project.
 This should be the final result:
-- ![Leds Connected](./images/Leds_Fully_Connected.jpg)
+
+<p align="center">
+  <img src="./images/Leds_Fully_Connected.jpg" alt="Leds Connector" width="300" height="300"/>
+</p>
