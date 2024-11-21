@@ -36,6 +36,9 @@
   - **DIR- and STEP-**: Connect both to the **GND** of the ESP32.
 - Ensure the ESP32 and the driver share a common **GND**.
 
+### Images Connections
+![Connecting stepper motor](./images/Connecting_Stepper_Motor.png)
+
 ---
 
 #### 4. Setting the DIP Switches on the TB6600
@@ -43,6 +46,36 @@
   - **Microstepping**: Choose a desired resolution, such as 16 microsteps.
   - **Current Limit**: Set the current limit to **2.5 A**, the nominal current of the Nema23-02 motor.
 - Refer to the TB6600 manual for the correct DIP switch settings.
+The following table shows the DIP switch settings for configuring the current limit on the TB6600 driver:
+
+
+
+| Current (A) | S4  | S5  | S6  |
+|-------------|------|------|------|
+| 0.5         | ON   | ON   | ON   |
+| 1.0         | ON   | OFF  | ON   |
+| 1.5         | ON   | ON   | OFF  |
+| 2.0         | ON   | OFF  | OFF  |
+| **2.5**     | OFF  | ON   | ON   |
+| 2.8         | OFF  | OFF  | ON   |
+| 3.0         | OFF  | ON   | OFF  |
+| 3.5         | OFF  | OFF  | OFF  |
+
+| Micro Step | Pulse/Rev | S1   | S2   | S3   |
+|------------|-----------|------|------|------|
+| 1          | 200       | ON   | ON   | OFF  |
+| 2/A        | 400       | ON   | OFF  | ON   |
+| 2/B        | 400       | OFF  | ON   | ON   |
+| 4          | 800       | ON   | OFF  | OFF  |
+| 8          | 1600      | OFF  | ON   | OFF  |
+| 16         | 3200      | OFF  | OFF  | ON   |
+| **32**     | **6400**  | OFF  | OFF  | OFF  |
+
+
+
+
+sources:
+ https://www.makerguides.com/wp-content/uploads/2019/10/TB6600-Manual.pdf
 
 ---
 
