@@ -17,7 +17,7 @@ Next, solder the segments together. Make sure to connect the following:
 - **GND** to **GND** (Ground)
 
 <p align="center">
-  <img src="./images/Leds_Connector.jpg" alt="Leds Connector" width="300" height="300"/>
+  <img src="./images/Leds_Connector.jpg" alt="Leds Connector" width="600" height="600"/>
 </p>
 
 
@@ -25,5 +25,5 @@ This will ensure that the LED strip is properly configured for your project.
 This should be the final result:
 
 <p align="center">
-  <img src="./images/Leds_Fully_Connected.jpg" alt="Leds Connector" width="300" height="300"/>
+  <img src="./images/Leds_Fully_Connected.jpg" alt="Leds Connector" width="600" height="600"/>
 </p>
