@@ -1,8 +1,6 @@
 # Install shade Shade cloths
 
-## Step 1 : connecting stepper motor
-
-### Requirements
+## Requirements
 1. **Nema23-02 Stepper Motor**
 2. **Joy-it SBC-MD-TB6600 Stepper Motor Driver**
 3. **Mean Well UHP-200R-36 Power Supply** (36 V, 5.6 A)
@@ -11,7 +9,9 @@
 
 ---
 
-### Step-by-Step Guide
+## Step-by-Step Guide
+
+### Step 1 : connecting stepper motor
 
 #### 1. Connecting the Power Supply to the Driver
 - Connect the **Mean Well 36 V power supply** to the TB6600 driver's power terminals:
@@ -39,9 +39,11 @@
 ### Images Connections
 ![Connecting stepper motor](./images/Connecting_Stepper_Motor.png)
 
----
 
-#### 4. Setting the DIP Switches on the TB6600
+
+## Step 2 : Use the right settings for ur driver
+
+### Setting the DIP Switches on the TB6600
 - Configure the DIP switches as follows:
   - **Microstepping**: Choose a desired resolution, such as 16 microsteps.
   - **Current Limit**: Set the current limit to **2.5 A**, the nominal current of the Nema23-02 motor.
@@ -77,9 +79,10 @@ The following table shows the DIP switch settings for configuring the current li
 sources:
  https://www.makerguides.com/wp-content/uploads/2019/10/TB6600-Manual.pdf
 
----
 
-#### 5. Setting Up Software on the ESP32
+## Step 3 : Software
+
+### Setting Up Software on the ESP32
 - Use the Arduino IDE or another development environment.
 - Install the **AccelStepper** library for easy stepper motor control.
 
@@ -113,3 +116,5 @@ void loop() {
 
   delay(1000); // Wait 1 second
 }
+```
+## Step 4 : Installation on serre

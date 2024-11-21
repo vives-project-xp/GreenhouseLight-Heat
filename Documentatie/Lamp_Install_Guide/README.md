@@ -37,3 +37,5 @@ This should be the final result:
   <img src=".././images/Wiring_architecture_diagram.png" alt="Leds Connector" width="600" height="600"/>
 </p>
 
+## Step 3: Installation on serre
+
