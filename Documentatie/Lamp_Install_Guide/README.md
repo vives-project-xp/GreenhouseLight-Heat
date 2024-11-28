@@ -54,6 +54,46 @@ To properly connect the components, we need to use a **3.3V to 5V level shifter*
 
 By ensuring this configuration, the ESP32 can reliably control the LED strips without voltage mismatches.
  
+## Step 3: Code
+
+To use the data with **WLED**, we received support from other projects. Below is an explanation of how these contributions were integrated into our setup:
+
+#### 1. Sensor Data Reading
+The sensor data reading was implemented with help from the [GreenhouseSensoring](https://github.com/vives-project-xp/GreenhouseSensoring) project. For more details on how sensor data is handled, please visit their GitHub repository.
+
+#### 2. Data Transmission
+The sensor data is sent to another project, [GreenhouseNetwork-Monitoring](https://github.com/vives-project-xp/GreenhouseNetwork-Monitoring). Visit their page for further insights into how the network transmission is managed.
+
+---
+
+### Base Code
+
+The following base code was adapted from **GreenhouseNetwork-Monitoring**:
+
+```python
+async def foo():
+    # data = hass.states.sensor.greenhouse_10_10_2_48
+    # temperature = data.attributes["temperature"]
+    # Brightness = data.attributes["brightness"]
+    Brightness = 100
+    
+    #send data to an esp32
+    import aiohttp
+    import json
+    url = "http://10.10.2.2/json/state"
+    data = {"bri": Brightness}
+    
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, headers=headers, data=json.dumps(data)) as response:
+            response_text = await response.text()
+            print(response_text)
+```
+
+
 
 
 ## Step 5: Connect the ESP to Net current
