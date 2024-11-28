@@ -1,49 +1,15 @@
 // WLED hostname
- const wledHostname = "http://lightandheat.local/json/state";
+const wledHostname = "http://lightandheat.local/json/state";
 
-// Sensor data
-const sensorData = 0;
-
-// Function to get give light data based on sensor data
-function getLightData(sensorData) {
-    // Define light data
-    let lightData = {
-        "brightness": 0,
-        "state": false,
-        "color": [0,0,0]
-    };
-
-    // Set light data based on sensor data
-    if (sensorData > 0) {
-        lightData.brightness = 255;
-        lightData.state = true;
-        lightData.color = [255,0,255];
-    }
-
-    return lightData;
-}
+// Configuration
+const maxLux = 4500; // Maximum lux provided by the LED strip
+const targetLux = 25000; // Desired lux for the plants
 
 // Function to set brightness
 async function setBrightness(brightness) {
     const data = {
-        "bri": brightness,    // Set brightness (0-255)
+        "bri": Math.min(Math.max(brightness, 0), 255), // Clamp brightness between 0 and 255
         "on": brightness > 0  // Automatically turn on if brightness is above 0
-    };
-    await sendWLEDRequest(data);
-}
-
-// Function to turn lights on or off
-async function toggleLights(state) {
-    const data = {
-        "on": state          // true to turn on, false to turn off
-    };
-    await sendWLEDRequest(data);
-}
-
-// Function to set the color
-async function setColor(color) {
-    const data = {
-        "seg":[{"col":[color]}]         // Set color "col": [[128, 0, 128]]
     };
     await sendWLEDRequest(data);
 }
@@ -58,21 +24,52 @@ async function sendWLEDRequest(data) {
             },
             body: JSON.stringify(data)
         });
-        
-        // response.ok in loop normaal
+
         if (response.ok) {
             console.log("Command sent successfully:", data);
         } else {
             console.error("Error sending command:", response.status);
         }
-    }catch (error) {
+    } catch (error) {
         console.error("Failed to send command:", error);
     }
 }
 
-// Example usage:
-setBrightness(10);
-toggleLights(true);
-setColor([255,0,255]); 
+// Function to calculate and adjust brightness based on sensor lux
+async function adjustBrightness(sensorLux) {
+    console.log("Sensor Lux:", sensorLux);
 
-getLightData(0);
+    // Calculate the needed lux from LEDs
+    const neededLux = targetLux - sensorLux;
+
+    // If no additional light is needed, turn off LEDs
+    if (neededLux <= 0) {
+        console.log("Sufficient light detected. Turning off LEDs.");
+        await setBrightness(0);
+        return;
+    }
+
+    // Calculate the brightness percentage required
+    const brightnessPercentage = neededLux / maxLux;
+
+    // Convert to WLED brightness level (0-255)
+    const brightnessLevel = Math.round(brightnessPercentage * 255);
+
+    console.log(`Needed Lux: ${neededLux}, Adjusting Brightness to: ${brightnessLevel}`);
+    await setBrightness(brightnessLevel);
+}
+
+// Example usage with a light sensor reading
+async function main() {
+    const sensorLux = await getLightSensorValue(); // Replace with actual sensor function
+    await adjustBrightness(sensorLux);
+}
+
+// Dummy function to simulate light sensor reading
+async function getLightSensorValue() {
+    // Replace this with actual code to read the sensor value
+    return 2000; // Example: 15,000 lux detected
+}
+
+// Run the main function
+main();
