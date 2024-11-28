@@ -1,6 +1,7 @@
 # Install shade Shade cloths
 
 ## Requirements
+
 1. **Nema23-02 Stepper Motor**
 2. **Joy-it SBC-MD-TB6600 Stepper Motor Driver**
 3. **Mean Well UHP-200R-36 Power Supply** (36 V, 5.6 A)
@@ -14,6 +15,7 @@
 ### Step 1 : connecting stepper motor
 
 #### 1. Connecting the Power Supply to the Driver
+
 - Connect the **Mean Well 36 V power supply** to the TB6600 driver's power terminals:
   - **+V**: Connect to the positive output of the power supply.
   - **GND**: Connect to the negative output of the power supply.
@@ -22,6 +24,7 @@
 ---
 
 #### 2. Connecting the Stepper Motor to the Driver
+
 - Connect the four wires of the Nema23-02 motor to the driver:
   - **A+ and A-**: Connect to the corresponding "A+" and "A-" terminals of the TB6600.
   - **B+ and B-**: Connect to the corresponding "B+" and "B-" terminals of the TB6600.
@@ -30,6 +33,7 @@
 ---
 
 #### 3. Connecting the ESP32 to the Driver
+
 - Connect the ESP32 to the STEP/DIR inputs of the driver:
   - **DIR+ (Direction)**: Connect to a GPIO pin on the ESP32, for example, GPIO 18.
   - **STEP+ (Pulse)**: Connect to another GPIO pin on the ESP32, for example, GPIO 19.
@@ -37,20 +41,18 @@
 - Ensure the ESP32 and the driver share a common **GND**.
 
 ### Images Connections
+
 ![Connecting stepper motor](./images/Connecting_Stepper_Motor.png)
-
-
 
 ## Step 2 : Use the right settings for ur driver
 
 ### Setting the DIP Switches on the TB6600
+
 - Configure the DIP switches as follows:
   - **Microstepping**: Choose a desired resolution, such as 16 microsteps.
   - **Current Limit**: Set the current limit to **2.5 A**, the nominal current of the Nema23-02 motor.
 - Refer to the TB6600 manual for the correct DIP switch settings.
 The following table shows the DIP switch settings for configuring the current limit on the TB6600 driver:
-
-
 
 | Current (A) | S4  | S5  | S6  |
 |-------------|------|------|------|
@@ -73,20 +75,18 @@ The following table shows the DIP switch settings for configuring the current li
 | 16         | 3200      | OFF  | OFF  | ON   |
 | **32**     | **6400**  | OFF  | OFF  | OFF  |
 
-
-
-
 sources:
  https://www.makerguides.com/wp-content/uploads/2019/10/TB6600-Manual.pdf
-
 
 ## Step 3 : Software
 
 ### Setting Up Software on the ESP32
+
 - Use the Arduino IDE or another development environment.
 - Install the **AccelStepper** library for easy stepper motor control.
 
 ##### Example Code (not tested yet)
+
 ```cpp
 #include <AccelStepper.h>
 
@@ -117,4 +117,5 @@ void loop() {
   delay(1000); // Wait 1 second
 }
 ```
+
 ## Step 4 : Installation on serre
