@@ -2,7 +2,7 @@
 #include <WiFiUdp.h>    // For UDP communication
 
 const char* ssid = "devbit";           // Replace with your Wi-Fi SSID
-const char* password = "Dr@@dloos!";   // Replace with your Wi-Fi password
+const char* password = "";   // Replace with your Wi-Fi password
 
 const char* deviceIP = "10.10.2.77";   // Replace with the IP address of your WiZ smart plug
 const int udpPort = 38899;
@@ -40,7 +40,7 @@ void sendWiZCommand(bool state) {
   String command = String("{\"method\":\"setState\",\"params\":{\"state\":") +
                    (state ? "true" : "false") +
                    String("}}");
-
+ 
   // Send the command to the WiZ plug
   udp.beginPacket(deviceIP, udpPort);
   udp.print(command);

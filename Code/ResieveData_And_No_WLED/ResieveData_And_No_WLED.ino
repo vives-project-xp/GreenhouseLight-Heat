@@ -4,7 +4,7 @@
 
 // Wi-Fi-instellingen
 const char* ssid = "devbit";       // Wi-Fi SSID
-const char* password = "Dr@@dloos!";   // Wi-Fi wachtwoord
+const char* password = "";   // Wi-Fi wachtwoord
 
 WebServer server(80);  // Initialiseer webserver op poort 80
 
@@ -80,5 +80,4 @@ void loop() {
   Serial.print("Current Brightness: ");
   Serial.println(brightness);
 
-  //delay(5000); // Pauzeer 5 seconden tussen prints
 }
