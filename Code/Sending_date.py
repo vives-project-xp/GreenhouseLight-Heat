@@ -1,20 +1,15 @@
 async def foo():
-    # data = hass.states.sensor.greenhouse_10_10_2_48
+    # data = hass.states.sensor.greenhouse_10_10_2_48 
     # temperature = data.attributes["temperature"]
-    # Brightness = data.attributes["brightness"]
-    Brightness = 100
+    # BrightnessRecieve = data.attributes["brightness"]
+    BrightnessSend = 0
+    sensor = random.randint(0, 100)
     
-    #send data to an esp32
-    import aiohttp
-    import json
-    url = "http://10.10.2.2/json/state"
-    data = {"bri": Brightness}
-    
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    
+    if sensor < 50:  
+        BrightnessSend = 3
+    else: BrightnessSend = 254
+        
     async with aiohttp.ClientSession() as session:
-        async with session.post(url, headers=headers, data=json.dumps(data)) as response:
+        async with session.post("http://10.10.2.2/json/state", headers={'Content-Type':'application/json'}, data=json.dumps({"bri": BrightnessSend})) as response:
             response_text = await response.text()
-            print(response_text)
+            _LOGGER.warning(f"Sensor value: {sensor}, Brightness sent: {BrightnessSend}, Response status: {response.status}, Response text: {response_text}")
