@@ -2,21 +2,43 @@
 #include <ArduinoJson.h>
 #include <WiFi.h> // Voor ESP32
 #include <FastLED.h>
+#include <WiFiUdp.h> // Voor UDP communicatie
 
 // Wi-Fi-instellingen
 const char* ssid = "devbit";       // Wi-Fi SSID
 const char* password = "Dr@@dloos!";   // Wi-Fi wachtwoord
 
 WebServer server(80);  // Initialiseer webserver op poort 80
+WiFiUDP udp;           // Voor communicatie met de smartplug
+
+// WiZ smartplug-instellingen
+const char* deviceIP = "10.10.2.77"; // Vervang met het IP-adres van je WiZ smartplug
+const int udpPort = 38899;
 
 // Variabelen om ontvangen gegevens op te slaan
-long long temperature; // Begin met een ongeldige waarde
-long long brightness;  // Begin met een ongeldige waarde
+long long temperature = -1; // Begin met een ongeldige waarde
+long long brightness = 128; // Standaard helderheid
 
 // LED-instellingen
 #define NUM_LEDS 144
 #define DATA_PIN 2
 CRGB leds[NUM_LEDS];
+
+// Functie om de WiZ smartplug te bedienen
+void sendWiZCommand(bool state) {
+  // Maak JSON-opdracht
+  String command = String("{\"method\":\"setState\",\"params\":{\"state\":") +
+                   (state ? "true" : "false") +
+                   String("}}");
+
+  // Stuur de opdracht naar de WiZ smartplug
+  udp.beginPacket(deviceIP, udpPort);
+  udp.print(command);
+  udp.endPacket();
+
+  Serial.print("WiZ Command sent: ");
+  Serial.println(command);
+}
 
 // Functie om ontvangen JSON-gegevens te verwerken
 void handleSensorData() {
@@ -45,6 +67,15 @@ void handleSensorData() {
 
     // Update de helderheid van de LED-strip
     FastLED.setBrightness(brightness); // Pas de helderheid van de LED-strip aan
+
+    // Controleer of de temperatuur onder de 20 graden is
+    if (temperature < 20) {
+      Serial.println("Temperature below 20°C: Turning smart plug ON");
+      sendWiZCommand(true); // Zet de smartplug aan
+    } else {
+      Serial.println("Temperature 20°C or above: Turning smart plug OFF");
+      sendWiZCommand(false); // Zet de smartplug uit
+    }
 
     // Stuur een bevestiging terug naar de client
     server.send(200, "application/json", "{\"status\":\"Data received\"}");
@@ -78,8 +109,12 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
 
-  // Initialize LEDs with RGBW configuration
+  // Initialize LEDs met RGBW-configuratie
   FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS).setRgbw(RgbwDefault());
+
+  // Initializeer UDP voor de WiZ smartplug
+  udp.begin(udpPort);
+  Serial.println("UDP Initialized");
 }
 
 void loop() {
@@ -90,11 +125,13 @@ void loop() {
   for (int i = 0; i < NUM_LEDS; i++) {
     leds[i] = CRGB(255, 255, 0); // Paars
   }
-  FastLED.show();  // Update de LEDs
+  FastLED.show(); // Update de LEDs
 
   // Print de waarden regelmatig naar de seriële monitor (voor debuggen)
   Serial.print("Current Temperature: ");
   Serial.println(temperature);
   Serial.print("Current Brightness: ");
   Serial.println(brightness);
+
+  delay(1000); // Een kleine vertraging voor stabiliteit
 }
