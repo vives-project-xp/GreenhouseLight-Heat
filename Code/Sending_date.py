@@ -1,15 +1,17 @@
-async def foo():
-    # data = hass.states.sensor.greenhouse_10_10_2_48 
-    # temperature = data.attributes["temperature"]
-    # BrightnessRecieve = data.attributes["brightness"]
-    BrightnessSend = 0
-    sensor = random.randint(0, 100)
+async def send_sensor_data():
+    # Genereer willekeurige waarden voor temperatuur en helderheid
+    temperature = random.randint(15, 30)  # Bijvoorbeeld 15 tot 30 graden Celsius
+    brightness = random.randint(0, 255)  # Helderheid van 0 tot 255
     
-    if sensor < 50:  
-        BrightnessSend = 3
-    else: BrightnessSend = 254
-        
+    payload = {
+        "temperature": temperature,
+        "brightness": brightness
+    }
+    
     async with aiohttp.ClientSession() as session:
-        async with session.post("http://10.10.2.2/json/state", headers={'Content-Type':'application/json'}, data=json.dumps({"bri": BrightnessSend})) as response:
+        async with session.post("http://10.10.2.2/json/state",
+                                headers={'Content-Type': 'application/json'},
+                                data=json.dumps(payload)) as response:
             response_text = await response.text()
-            _LOGGER.warning(f"Sensor value: {sensor}, Brightness sent: {BrightnessSend}, Response status: {response.status}, Response text: {response_text}")
+            _LOGGER.warning(f"Temperature sent: {temperature}, Brightness sent: {brightness}, "
+                            f"Response status: {response.status}, Response text: {response_text}")
