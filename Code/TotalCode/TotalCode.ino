@@ -4,6 +4,10 @@
 #include <FastLED.h>
 #include <WiFiUdp.h> // Voor UDP communicatie
 
+// Stepper instellen
+#define STEP_PIN 4  // GPIO4 voor PUL+
+#define DIR_PIN 5    // GPIO5 voor DIR+
+
 // Wi-Fi-instellingen
 const char* ssid = "devbit";       // Wi-Fi SSID
 const char* password = "Dr@@dloos!";   // Wi-Fi wachtwoord
@@ -17,7 +21,8 @@ const int udpPort = 38899;
 
 // Variabelen om ontvangen gegevens op te slaan
 long long temperature = -1; // Begin met een ongeldige waarde
-long long brightness = 128; // Standaard helderheid
+long long brightnessSensor = 128; // Standaard helderheid
+int brightnessLEDS = 0;
 
 // LED-instellingen
 #define NUM_LEDS 144
@@ -26,7 +31,8 @@ CRGB leds[NUM_LEDS];
 
 // Functie om de WiZ smartplug te bedienen
 void sendWiZCommand(bool state) {
-  // Maak JSON-opdracht
+  // Maak JSON-opdrach
+
   String command = String("{\"method\":\"setState\",\"params\":{\"state\":") +
                    (state ? "true" : "false") +
                    String("}}");
@@ -40,9 +46,7 @@ void sendWiZCommand(bool state) {
   Serial.println(command);
 }
 
-
-
-bool ledsOn = false;
+bool ShadeIsOpen = false;   // als true = schaduw is er over de serre
 
 // Functie om ontvangen JSON-gegevens te verwerken
 void handleSensorData() {
@@ -60,36 +64,55 @@ void handleSensorData() {
       temperature = doc["temperature"].as<long long>();
     }
     if (doc.containsKey("brightness")) {
-      brightness = doc["brightness"].as<long long>();
+      brightnessSensor = doc["brightness"].as<long long>();
     }
 
     // Print de ontvangen waarden naar de seriële monitor
     Serial.print("Received Temperature: ");
     Serial.println(temperature);
     Serial.print("Received Brightness: ");
-    Serial.println(brightness);
+    Serial.println(brightnessSensor);
 
   
-    if (!ledsOn && brightness < 270) {
-        ledsOn = true;  // Zet de LED's aan
-        FastLED.setBrightness(255);
-        Serial.println("LEDs turned ON");
+    if (brightnessSensor < 270) {
+      if (brightnessLEDS >= 235)
+      {
+        brightnessLEDS = 255;
+      } else {
+        brightnessLEDS = brightnessLEDS + 10;
+      }
+      brightnessLEDS = brightnessLEDS + 10;
+        FastLED.setBrightness(brightnessLEDS);
+        Serial.print("LEDs more light +10 they are now:");
+        Serial.println(brightnessLEDS);
     } 
-    else if (ledsOn && brightness < 220) {
-        ledsOn = false;  // Zet de LED's uit
-        FastLED.setBrightness(0);
-        Serial.println("LEDs turned OFF");
+    else if (brightnessSensor > 700) {
+      if (brightnessLEDS >= 20)
+      {
+        brightnessLEDS = 0;
+      } else {
+        brightnessLEDS = brightnessLEDS - 10;
+      }
+      FastLED.setBrightness(brightnessLEDS);
+      Serial.print("LEDs less light (-10) they are now:");
+      Serial.println(brightnessLEDS);
     }
-
 
 
     // Controleer of de temperatuur onder de 20 graden is
     if (temperature < 20) {
       Serial.println("Temperature below 20°C: Turning smart plug ON");
       sendWiZCommand(true); // Zet de smartplug aan
-    } else {
+    } else if(temperature>25 && temperature<27) {
       Serial.println("Temperature 20°C or above: Turning smart plug OFF");
       sendWiZCommand(false); // Zet de smartplug uit
+    }
+
+
+    if (temperature>30 && ShadeIsOpen = false) {
+      OpenShade();
+    } else if(temperature<25 && ShadeIsOpen = true){
+      CloseShade();
     }
 
     // Stuur een bevestiging terug naar de client
@@ -99,8 +122,39 @@ void handleSensorData() {
   }
 }
 
+void OpenShade(){
+  ShadeIsOpen = true;
+
+  digitalWrite(DIR_PIN, LOW);  // Draairichting vooruit instellen
+  Serial.println("Going to OpenShade temp getting high")
+  for (int i = 0; i < 2400; i++) { // 200 keer lus doorlopen is 360 graden draaien
+    digitalWrite(STEP_PIN, HIGH); // omtrek buizen van ons 12.5 cm doek moet 1.6m uit rollen = ong 12 rotaties = 200*12 = 2400
+    delay(10);  // Snelheid verhogen, kleiner delay
+    digitalWrite(STEP_PIN, LOW);
+    delay(10);
+  }
+}
+
+void CloseShade(){
+  ShadeIsOpen = false;
+
+  digitalWrite(DIR_PIN, HIGH);  // Draairichting vooruit instellen
+  Serial.println("Going to CloseShade temp getting low")
+  for (int i = 0; i < 2400; i++) { // 200 keer lus doorlopen is 360 graden draaien
+    digitalWrite(STEP_PIN, HIGH); // omtrek buizen van ons 12.5 cm doek moet 1.6m uit rollen = ong 12 rotaties = 200*12 = 2400
+    delay(10);  // Snelheid verhogen, kleiner delay
+    digitalWrite(STEP_PIN, LOW);
+    delay(10);
+  }
+
+}
+
 void setup() {
   Serial.begin(115200);
+  
+  // stepper als output zetten
+  pinMode(DIR_PIN, OUTPUT);
+  pinMode(STEP_PIN, OUTPUT);
 
   // Verbinden met Wi-Fi
   WiFi.disconnect(true); // Zorg dat Wi-Fi losgekoppeld is voor een schone start
@@ -136,17 +190,11 @@ void loop() {
   // Verwerk binnenkomende HTTP-verzoeken
   server.handleClient();
 
-  // Stel de LED-strip in op paars
+  // volledige ledstrip op paars zetten
   for (int i = 0; i < NUM_LEDS; i++) {
     leds[i] = CRGB(255, 255, 0); // Paars
   }
   FastLED.show(); // Update de LEDs
 
-  // Print de waarden regelmatig naar de seriële monitor (voor debuggen)
-  Serial.print("Current Temperature: ");
-  Serial.println(temperature);
-  Serial.print("Current Brightness: ");
-  Serial.println(brightness);
-
-  delay(5000); // Een kleine vertraging voor stabiliteit
+  delay(5000); // iedere 5 sec binnen lezen enz
 }

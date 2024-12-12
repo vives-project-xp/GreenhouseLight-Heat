@@ -48,8 +48,8 @@ To properly connect the components, we need to use a **3.3V to 5V level shifter*
 
 #### GPIO Connections
 
-- The **first LED strip** is connected to **GPIO2** on the ESP32 (via the level shifter).
-- The **second LED strip** is connected to **GPIO3** on the ESP32 (also via the level shifter).
+- The **LED strip** is connected to **GPIO2** on the ESP32 (via the level shifter).
+
 
 By ensuring this configuration, the ESP32 can reliably control the LED strips without voltage mismatches.
 
@@ -58,7 +58,10 @@ By ensuring this configuration, the ESP32 can reliably control the LED strips wi
 
 ## Step 3: Code
 
-To use the data with **WLED**, we received support from other projects. Below is an explanation of how these contributions were integrated into our setup:
+Initially, we considered using **WLED** because it is easy to set up and manage. However, we also needed to implement our custom script on the ESP32 to control the **heater** and **shading**. Since integrating WLED with our custom logic proved challenging, we decided to manage the LEDs through our own script instead. This approach allows us to consolidate all sensor data and control logic.
+
+The sensor value was send from a project **GreenhouseSensoring** to **GreenhouseNetwork-Monitoring** who then send the data to us.
+
 
 ### 1. Sensor Data Reading
 
