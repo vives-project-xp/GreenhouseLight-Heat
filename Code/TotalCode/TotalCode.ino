@@ -6,7 +6,7 @@
 
 // Wi-Fi-instellingen
 const char* ssid = "devbit";       // Wi-Fi SSID
-const char* password = "";   // Wi-Fi wachtwoord
+const char* password = "Dr@@dloos!";   // Wi-Fi wachtwoord
 
 WebServer server(80);  // Initialiseer webserver op poort 80
 WiFiUDP udp;           // Voor communicatie met de smartplug
@@ -40,6 +40,10 @@ void sendWiZCommand(bool state) {
   Serial.println(command);
 }
 
+
+
+bool ledsOn = false;
+
 // Functie om ontvangen JSON-gegevens te verwerken
 void handleSensorData() {
   StaticJsonDocument<200> doc;
@@ -65,8 +69,19 @@ void handleSensorData() {
     Serial.print("Received Brightness: ");
     Serial.println(brightness);
 
-    // Update de helderheid van de LED-strip
-    FastLED.setBrightness(brightness); // Pas de helderheid van de LED-strip aan
+  
+    if (!ledsOn && brightness < 270) {
+        ledsOn = true;  // Zet de LED's aan
+        FastLED.setBrightness(255);
+        Serial.println("LEDs turned ON");
+    } 
+    else if (ledsOn && brightness < 220) {
+        ledsOn = false;  // Zet de LED's uit
+        FastLED.setBrightness(0);
+        Serial.println("LEDs turned OFF");
+    }
+
+
 
     // Controleer of de temperatuur onder de 20 graden is
     if (temperature < 20) {
@@ -133,5 +148,5 @@ void loop() {
   Serial.print("Current Brightness: ");
   Serial.println(brightness);
 
-  delay(1000); // Een kleine vertraging voor stabiliteit
+  delay(5000); // Een kleine vertraging voor stabiliteit
 }

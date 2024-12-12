@@ -2,7 +2,7 @@
 
 ## Requirements
 
-1. **Nema23-02 Stepper Motor**
+1. **SY42STH47-1206A**
 2. **Joy-it SBC-MD-TB6600 Stepper Motor Driver**
 3. **Mean Well UHP-200R-36 Power Supply** (36 V, 5.6 A)
 4. **ESP32 Microcontroller**
@@ -25,9 +25,15 @@
 
 #### 2. Connecting the Stepper Motor to the Driver
 
-- Connect the four wires of the Nema23-02 motor to the driver:
+- Connect the four wires of the SY42STH47-1206A stepmotor to the driver:
   - **A+ and A-**: Connect to the corresponding "A+" and "A-" terminals of the TB6600.
+    A+ --> Red 
+    A- --> Bleu
+
   - **B+ and B-**: Connect to the corresponding "B+" and "B-" terminals of the TB6600.
+    B+ --> Green
+    B- --> Black
+
 - Verify the correct pin order in the motor's datasheet to prevent a short circuit.
 
 ---
@@ -35,8 +41,8 @@
 #### 3. Connecting the ESP32 to the Driver
 
 - Connect the ESP32 to the STEP/DIR inputs of the driver:
-  - **DIR+ (Direction)**: Connect to a GPIO pin on the ESP32, for example, GPIO 18.
-  - **STEP+ (Pulse)**: Connect to another GPIO pin on the ESP32, for example, GPIO 19.
+  - **DIR+ (Direction)**: Connect to a GPIO pin on the ESP32, for example, GPIO 5.
+  - **STEP+ (Pulse)**: Connect to another GPIO pin on the ESP32, for example, GPIO 4.
   - **DIR- and STEP-**: Connect both to the **GND** of the ESP32.
 - Ensure the ESP32 and the driver share a common **GND**.
 
@@ -50,30 +56,30 @@
 
 - Configure the DIP switches as follows:
   - **Microstepping**: Choose a desired resolution, such as 16 microsteps.
-  - **Current Limit**: Set the current limit to **2.5 A**, the nominal current of the Nema23-02 motor.
+  - **Current Limit**: Set the current limit to **1 A**, the nominal current of the SY42STH47-1206A is 1.2A.
 - Refer to the TB6600 manual for the correct DIP switch settings.
 The following table shows the DIP switch settings for configuring the current limit on the TB6600 driver:
 
 | Current (A) | S4  | S5  | S6  |
 |-------------|------|------|------|
 | 0.5         | ON   | ON   | ON   |
-| 1.0         | ON   | OFF  | ON   |
+| **1.0**     | ON   | OFF  | ON   |
 | 1.5         | ON   | ON   | OFF  |
 | 2.0         | ON   | OFF  | OFF  |
-| **2.5**     | OFF  | ON   | ON   |
+| 2.5         | OFF  | ON   | ON   |
 | 2.8         | OFF  | OFF  | ON   |
 | 3.0         | OFF  | ON   | OFF  |
 | 3.5         | OFF  | OFF  | OFF  |
 
 | Micro Step | Pulse/Rev | S1   | S2   | S3   |
 |------------|-----------|------|------|------|
-| 1          | 200       | ON   | ON   | OFF  |
+| ** 1**           | 200       | ON   | ON   | OFF  |
 | 2/A        | 400       | ON   | OFF  | ON   |
 | 2/B        | 400       | OFF  | ON   | ON   |
 | 4          | 800       | ON   | OFF  | OFF  |
 | 8          | 1600      | OFF  | ON   | OFF  |
 | 16         | 3200      | OFF  | OFF  | ON   |
-| **32**     | **6400**  | OFF  | OFF  | OFF  |
+| 32    | 6400  | OFF  | OFF  | OFF  |
 
 sources:
  https://www.makerguides.com/wp-content/uploads/2019/10/TB6600-Manual.pdf
@@ -83,38 +89,32 @@ sources:
 ### Setting Up Software on the ESP32
 
 - Use the Arduino IDE or another development environment.
-- Install the **AccelStepper** library for easy stepper motor control.
 
 ##### Example Code (not tested yet)
 
 ```cpp
-#include <AccelStepper.h>
-
-// Define pins
-#define STEP_PIN 19
-#define DIR_PIN 18
-
-// Configure stepper motor (driver type = 1)
-AccelStepper stepper(AccelStepper::DRIVER, STEP_PIN, DIR_PIN);
+#define PULSE_PIN 4 // GPIO4 voor PUL+
+#define DIR_PIN 5   // GPIO5 voor DIR+
 
 void setup() {
-  // Set maximum speed and acceleration
-  stepper.setMaxSpeed(1000); // Max speed (steps per second)
-  stepper.setAcceleration(500); // Acceleration (steps per second^2)
+  pinMode(PULSE_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
+  
 }
 
 void loop() {
-  // Rotate motor 1000 steps forward
-  stepper.moveTo(1000);
-  stepper.runToPosition(); // Wait until target position is reached
-
-  delay(1000); // Wait 1 second
-
-  // Rotate motor 1000 steps backward
-  stepper.moveTo(-1000);
-  stepper.runToPosition();
-
-  delay(1000); // Wait 1 second
+  // Zet de draairichting
+  digitalWrite(DIR_PIN, HIGH); // HIGH = vooruit, LOW = achteruit
+  
+  // Stuur pulsen naar de driver
+  for (int i = 0; i < 200; i++) { // 200 stappen = 1 omwenteling bij 1,8° stappenmotor
+    digitalWrite(PULSE_PIN, HIGH);
+    delayMicroseconds(500); // Pulse-hoogte (500 µs)
+    digitalWrite(PULSE_PIN, LOW);
+    delayMicroseconds(500); // Pulse-laag (500 µs)
+  }
+  
+  delay(1000); // Wacht 1 seconde voor de volgende beweging
 }
 ```
 
