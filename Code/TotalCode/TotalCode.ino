@@ -31,8 +31,7 @@ CRGB leds[NUM_LEDS];
 
 // Functie om de WiZ smartplug te bedienen
 void sendWiZCommand(bool state) {
-  // Maak JSON-opdrach
-
+  // Maak JSON-opdracht
   String command = String("{\"method\":\"setState\",\"params\":{\"state\":") +
                    (state ? "true" : "false") +
                    String("}}");
@@ -73,45 +72,39 @@ void handleSensorData() {
     Serial.print("Received Brightness: ");
     Serial.println(brightnessSensor);
 
-  
     if (brightnessSensor < 270) {
-      if (brightnessLEDS >= 235)
-      {
+      if (brightnessLEDS < 235) {
+        brightnessLEDS += 10;
+      } else {
         brightnessLEDS = 255;
-      } else {
-        brightnessLEDS = brightnessLEDS + 10;
-      }
-      brightnessLEDS = brightnessLEDS + 10;
-        FastLED.setBrightness(brightnessLEDS);
-        Serial.print("LEDs more light +10 they are now:");
-        Serial.println(brightnessLEDS);
-    } 
-    else if (brightnessSensor > 700) {
-      if (brightnessLEDS >= 20)
-      {
-        brightnessLEDS = 0;
-      } else {
-        brightnessLEDS = brightnessLEDS - 10;
       }
       FastLED.setBrightness(brightnessLEDS);
-      Serial.print("LEDs less light (-10) they are now:");
+      Serial.print("LEDs more light +10 they are now: ");
+      Serial.println(brightnessLEDS);
+    } 
+    else if (brightnessSensor > 700) {
+      if (brightnessLEDS > 10) {
+        brightnessLEDS -= 10;
+      } else {
+        brightnessLEDS = 0;
+      }
+      FastLED.setBrightness(brightnessLEDS);
+      Serial.print("LEDs less light (-10) they are now: ");
       Serial.println(brightnessLEDS);
     }
-
 
     // Controleer of de temperatuur onder de 20 graden is
     if (temperature < 20) {
       Serial.println("Temperature below 20°C: Turning smart plug ON");
       sendWiZCommand(true); // Zet de smartplug aan
-    } else if(temperature>25 && temperature<27) {
-      Serial.println("Temperature 20°C or above: Turning smart plug OFF");
+    } else if (temperature > 25 && temperature < 27) {
+      Serial.println("Temperature between 25°C and 27°C: Turning smart plug OFF");
       sendWiZCommand(false); // Zet de smartplug uit
     }
 
-
-    if (temperature>30 && ShadeIsOpen = false) {
+    if (temperature > 30 && !ShadeIsOpen) {
       OpenShade();
-    } else if(temperature<25 && ShadeIsOpen = true){
+    } else if (temperature < 25 && ShadeIsOpen) {
       CloseShade();
     }
 
@@ -122,36 +115,35 @@ void handleSensorData() {
   }
 }
 
-void OpenShade(){
+void OpenShade() {
   ShadeIsOpen = true;
 
   digitalWrite(DIR_PIN, LOW);  // Draairichting vooruit instellen
-  Serial.println("Going to OpenShade temp getting high")
-  for (int i = 0; i < 2400; i++) { // 200 keer lus doorlopen is 360 graden draaien
-    digitalWrite(STEP_PIN, HIGH); // omtrek buizen van ons 12.5 cm doek moet 1.6m uit rollen = ong 12 rotaties = 200*12 = 2400
-    delay(10);  // Snelheid verhogen, kleiner delay
+  Serial.println("Going to OpenShade temp getting high");
+  for (int i = 0; i < 2400; i++) {
+    digitalWrite(STEP_PIN, HIGH);
+    delay(10);
     digitalWrite(STEP_PIN, LOW);
     delay(10);
   }
 }
 
-void CloseShade(){
+void CloseShade() {
   ShadeIsOpen = false;
 
-  digitalWrite(DIR_PIN, HIGH);  // Draairichting vooruit instellen
-  Serial.println("Going to CloseShade temp getting low")
-  for (int i = 0; i < 2400; i++) { // 200 keer lus doorlopen is 360 graden draaien
-    digitalWrite(STEP_PIN, HIGH); // omtrek buizen van ons 12.5 cm doek moet 1.6m uit rollen = ong 12 rotaties = 200*12 = 2400
-    delay(10);  // Snelheid verhogen, kleiner delay
+  digitalWrite(DIR_PIN, HIGH);  // Draairichting achteruit instellen
+  Serial.println("Going to CloseShade temp getting low");
+  for (int i = 0; i < 2400; i++) {
+    digitalWrite(STEP_PIN, HIGH);
+    delay(10);
     digitalWrite(STEP_PIN, LOW);
     delay(10);
   }
-
 }
 
 void setup() {
   Serial.begin(115200);
-  
+
   // stepper als output zetten
   pinMode(DIR_PIN, OUTPUT);
   pinMode(STEP_PIN, OUTPUT);
@@ -178,8 +170,8 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
 
-  // Initialize LEDs met RGBW-configuratie
-  FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS).setRgbw(RgbwDefault());
+  // Initialize LEDs met RGB-configuratie
+  FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
 
   // Initializeer UDP voor de WiZ smartplug
   udp.begin(udpPort);
@@ -192,9 +184,9 @@ void loop() {
 
   // volledige ledstrip op paars zetten
   for (int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = CRGB(255, 255, 0); // Paars
+    leds[i] = CRGB(255, 0, 255); // Paars
   }
   FastLED.show(); // Update de LEDs
 
-  delay(5000); // iedere 5 sec binnen lezen enz
+  delay(5000); // Iedere 5 sec binnen lezen enz
 }
