@@ -17,7 +17,8 @@ const int udpPort = 38899;
 
 // Variabelen om ontvangen gegevens op te slaan
 long long temperature = -1; // Begin met een ongeldige waarde
-long long brightness = 128; // Standaard helderheid
+long long brightnessSensor = 128; // Standaard helderheid
+int brightnessLEDS = 0;
 
 // LED-instellingen
 #define NUM_LEDS 144
@@ -60,25 +61,38 @@ void handleSensorData() {
       temperature = doc["temperature"].as<long long>();
     }
     if (doc.containsKey("brightness")) {
-      brightness = doc["brightness"].as<long long>();
+      brightnessSensor = doc["brightness"].as<long long>();
     }
 
     // Print de ontvangen waarden naar de seriële monitor
     Serial.print("Received Temperature: ");
     Serial.println(temperature);
     Serial.print("Received Brightness: ");
-    Serial.println(brightness);
+    Serial.println(brightnessSensor);
 
   
-    if (!ledsOn && brightness < 270) {
-        ledsOn = true;  // Zet de LED's aan
-        FastLED.setBrightness(255);
-        Serial.println("LEDs turned ON");
+    if (brightnessSensor < 270) {
+      if (brightnessLEDS >= 235)
+      {
+        brightnessLEDS = 255;
+      } else {
+        brightnessLEDS = brightnessLEDS + 10;
+      }
+      brightnessLEDS = brightnessLEDS + 10;
+        FastLED.setBrightness(brightnessLEDS);
+        Serial.print("LEDs more light +10:");
+        Serial.println(brightnessLEDS);
     } 
-    else if (ledsOn && brightness < 220) {
-        ledsOn = false;  // Zet de LED's uit
-        FastLED.setBrightness(0);
-        Serial.println("LEDs turned OFF");
+    else if (brightnessSensor > 700) {
+      if (brightnessLEDS >= 20)
+      {
+        brightnessLEDS = 0;
+      } else {
+        brightnessLEDS = brightnessLEDS - 10;
+      }
+      FastLED.setBrightness(brightnessLEDS);
+      Serial.print("LEDs less light (-10):");
+      Serial.println(brightnessLEDS);
     }
 
 
@@ -146,7 +160,7 @@ void loop() {
   Serial.print("Current Temperature: ");
   Serial.println(temperature);
   Serial.print("Current Brightness: ");
-  Serial.println(brightness);
+  Serial.println(brightnessSensor);
 
   delay(5000); // Een kleine vertraging voor stabiliteit
 }
