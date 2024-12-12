@@ -97,6 +97,12 @@ async def foo():
             print(response_text)
 ```
 
-## Step 5: Connect the ESP to Net current
+## Step 4: Connect the ESP to Net current
 
-## Step 4: Installation on serre
+## Step 5: Installation on serre
+
+### Led strip on lamp
+
+Now the ledstrip can be put onto the 3d printed lamp. You put the ledstrip on the plate of the lamp so that the connector can go true the holes of the plate to connect to the esp on the back side.
+
+![LedStrip_on_Lamp](../images/led_strip_on_lamp.jpg)
