@@ -21,7 +21,7 @@ const int udpPort = 38899;
 
 // Variabelen om ontvangen gegevens op te slaan
 long long temperature = -1; // Begin met een ongeldige waarde
-long long brightnessSensor = 128; // Standaard helderheid
+long long brightnessSensor = 500; // Standaard helderheid
 int brightnessLEDS = 0;
 
 // LED-instellingen
