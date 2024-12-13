@@ -26,7 +26,7 @@ Now u shoud be abled to send the data to ur ESP.
 1. **Install the LED strip/Lamp:** this can all be found [here](./Lamp_Install_Guide/README.md)
 2. **Install shade Shade cloths:** how to install them can be found here [here](./Shade_cloths_Install_Guide/README.md).
 3. **Install heater:** if u want to know how we installed the heater that can be found here [here](./Heater_Install_Guide/README.md).
-4. **Recieving data** To recieve data u need to connect ur esp32 to WIFI working together with [GreenhouseNetwork-Monitoring](https://github.com/vives-project-xp/GreenhouseNetwork-Monitoring) we placed this code snipped [this code snipped](https://github.com/vives-project-xp/GreenhouseNetwork-Monitoring) in there code. 
+
 
 **Its a good thing to test everyting together in a demo setup before u install things on the actual serre!!!** 
 
