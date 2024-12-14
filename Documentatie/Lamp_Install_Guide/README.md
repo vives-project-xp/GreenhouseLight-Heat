@@ -38,7 +38,7 @@ This should be the final result:
 
 ### Guide on Connections
 
-To properly connect the components, we need to use a **3.3V to 5V level shifter** because the ESP32 sends **3.3V data signals**, while the LED strips require **5V data signals**.
+To properly connect the components, we need to use a **3.3V to 5V level shifter** because the ESP32 sends **3.3V data signals**, while the LED strips require **5V data signals**. We made or own custom board for this.
 
 #### Power Supply
 
@@ -60,45 +60,8 @@ By ensuring this configuration, the ESP32 can reliably control the LED strips wi
 
 Initially, we considered using **WLED** because it is easy to set up and manage. However, we also needed to implement our custom script on the ESP32 to control the **heater** and **shading**. Since integrating WLED with our custom logic proved challenging, we decided to manage the LEDs through our own script instead. This approach allows us to consolidate all sensor data and control logic.
 
-The sensor value was send from a project **GreenhouseSensoring** to **GreenhouseNetwork-Monitoring** who then send the data to us.
+Then to test the basic LED setup u can [upload this code](../../Code/LEDS_Aanstuuren/LEDS_Appart_Aanstuuren.ino) to ur esp32 this should give u purple light on the LEDS.
 
-
-### 1. Sensor Data Reading
-
-The sensor data reading was implemented with help from the [GreenhouseSensoring](https://github.com/vives-project-xp/GreenhouseSensoring) project. For more details on how sensor data is handled, please visit their GitHub repository.
-
-### 2. Data Transmission
-
-The sensor data is sent to another project, [GreenhouseNetwork-Monitoring](https://github.com/vives-project-xp/GreenhouseNetwork-Monitoring). Visit their page for further insights into how the network transmission is managed.
-
----
-
-## Base Code
-
-The following base code was adapted from **GreenhouseNetwork-Monitoring**:
-
-```python
-async def foo():
-    # data = hass.states.sensor.greenhouse_10_10_2_48
-    # temperature = data.attributes["temperature"]
-    # Brightness = data.attributes["brightness"]
-    Brightness = 100
-    
-    #send data to an esp32
-    import aiohttp
-    import json
-    url = "http://10.10.2.2/json/state"
-    data = {"bri": Brightness}
-    
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, headers=headers, data=json.dumps(data)) as response:
-            response_text = await response.text()
-            print(response_text)
-```
 
 ## Step 4: Connect the ESP to Net current
 
@@ -106,6 +69,10 @@ async def foo():
 
 ### Led strip on lamp
 
-Now the ledstrip can be put onto the 3d printed lamp. You put the ledstrip on the plate of the lamp so that the connector can go true the holes of the plate to connect to the esp on the back side.
+Now the ledstrip can be put onto the [3d printed lamp](../../resources/3D-Tekeningen/PlaatLamp.stl). You put the ledstrip on the plate of the lamp so that the connector can go true the holes of the plate to connect to the esp on the back side.
 
 ![LedStrip_on_Lamp](../images/led_strip_on_lamp.jpg)
+
+
+
+### Installing it on the serre

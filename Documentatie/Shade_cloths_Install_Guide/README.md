@@ -27,11 +27,15 @@
 
 - Connect the four wires of the SY42STH47-1206A stepmotor to the driver:
   - **A+ and A-**: Connect to the corresponding "A+" and "A-" terminals of the TB6600.
+
     A+ --> Red 
+
     A- --> Bleu
 
   - **B+ and B-**: Connect to the corresponding "B+" and "B-" terminals of the TB6600.
+
     B+ --> Green
+
     B- --> Black
 
 - Verify the correct pin order in the motor's datasheet to prevent a short circuit.
@@ -48,14 +52,14 @@
 
 ### Images Connections
 
-![Connecting stepper motor](./images/Connecting_Stepper_Motor.png)
+![Architectuur_Doc](../images/Wiring_architecture_diagram.png)
 
 ## Step 2 : Use the right settings for ur driver
 
 ### Setting the DIP Switches on the TB6600
 
 - Configure the DIP switches as follows:
-  - **Microstepping**: Choose a desired resolution, such as 16 microsteps.
+  - **Microstepping**: Choose a desired resolution, such as  microsteps.
   - **Current Limit**: Set the current limit to **1 A**, the nominal current of the SY42STH47-1206A is 1.2A.
 - Refer to the TB6600 manual for the correct DIP switch settings.
 The following table shows the DIP switch settings for configuring the current limit on the TB6600 driver:
@@ -63,7 +67,7 @@ The following table shows the DIP switch settings for configuring the current li
 | Current (A) | S4  | S5  | S6  |
 |-------------|------|------|------|
 | 0.5         | ON   | ON   | ON   |
-| **1.0**     | ON   | OFF  | ON   |
+| **1.0**     | **ON**   | **OFF**  | **ON**   |
 | 1.5         | ON   | ON   | OFF  |
 | 2.0         | ON   | OFF  | OFF  |
 | 2.5         | OFF  | ON   | ON   |
@@ -73,7 +77,7 @@ The following table shows the DIP switch settings for configuring the current li
 
 | Micro Step | Pulse/Rev | S1   | S2   | S3   |
 |------------|-----------|------|------|------|
-| ** 1**           | 200       | ON   | ON   | OFF  |
+| **1**           | **200**       | **ON**   | **ON**   | **OFF**  |
 | 2/A        | 400       | ON   | OFF  | ON   |
 | 2/B        | 400       | OFF  | ON   | ON   |
 | 4          | 800       | ON   | OFF  | OFF  |
@@ -88,34 +92,8 @@ sources:
 
 ### Setting Up Software on the ESP32
 
-- Use the Arduino IDE or another development environment.
+- Using the Arduino IDE.
 
-##### Example Code (not tested yet)
-
-```cpp
-#define PULSE_PIN 4 // GPIO4 voor PUL+
-#define DIR_PIN 5   // GPIO5 voor DIR+
-
-void setup() {
-  pinMode(PULSE_PIN, OUTPUT);
-  pinMode(DIR_PIN, OUTPUT);
-  
-}
-
-void loop() {
-  // Zet de draairichting
-  digitalWrite(DIR_PIN, HIGH); // HIGH = vooruit, LOW = achteruit
-  
-  // Stuur pulsen naar de driver
-  for (int i = 0; i < 200; i++) { // 200 stappen = 1 omwenteling bij 1,8° stappenmotor
-    digitalWrite(PULSE_PIN, HIGH);
-    delayMicroseconds(500); // Pulse-hoogte (500 µs)
-    digitalWrite(PULSE_PIN, LOW);
-    delayMicroseconds(500); // Pulse-laag (500 µs)
-  }
-  
-  delay(1000); // Wacht 1 seconde voor de volgende beweging
-}
-```
+Upload [this code](../../Code/StappenMotorCode/CodeStappenMotorDraaien.ino) to the ESP32 for basic rotation , 1 full rotation right then 1 full rotation left. This way u can varify if it works.
 
 ## Step 4 : Installation on serre

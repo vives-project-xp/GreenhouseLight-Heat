@@ -1,36 +1,38 @@
-# Documentation 
+# Installation
 
-This is the documentation page. This is the place u need to be if u want to know everything about or hardware witch components we use. How u set up everything ect. 
+## Reviece the data
 
-## Table of context
+Before we start we need to be abled to connect the ESP32 to the Wifi and recieve the data from [GreenhouseNetwork-Monitoring](https://github.com/vives-project-xp/GreenhouseNetwork-Monitoring) 
 
-## Installation
+- For this we had to place  [this code snipped](../Code/Sending_date.py) in there code. For more info go to there Github.
+
+- Now to connect the ESP32 to the Wifi and recieve the date we u need to upload [this code snipped](../Code/ResieveData_And_No_WLED/ResieveData_And_No_WLED.ino)  to the esp.
+
+
+### Postman
+- If u dont want to use the other projects or u want to test things without them u can test the ESP32 using [Postman](https://www.postman.com/)
+
+Using these settings: 
+![Postman1](../Documentatie/images/PostmanSettings1.png)
+![Postman2](../Documentatie/images/Postmansettings2.png)
+
+Now u shoud be abled to send the data to ur ESP. 
+
+
+
+## Step by step guide
+
 
 1. **Install the LED strip/Lamp:** this can all be found [here](./Lamp_Install_Guide/README.md)
 2. **Install shade Shade cloths:** how to install them can be found here [here](./Shade_cloths_Install_Guide/README.md).
 3. **Install heater:** if u want to know how we installed the heater that can be found here [here](./Heater_Install_Guide/README.md).
 
-## Bill of Material
 
-These are all the components we purchased in this project. **Prices may vary depending in the website and date!!**
+**Its a good thing to test everyting together in a demo setup before u install things on the actual serre!!!** 
 
-| Component                                                                                                                                                                                                                                                                                  | Quantity | Price / unit |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------: | -----------: |
-| [**SK6812 RGBW LED Strip**](https://www.btf-lighting.com/collections/sk6812-rgbw/products/1-sk6812-rgbw-4-in-1-pixels-individual-addressable-led-strip-dc5v?variant=45843368149218)                                                                                             |    1     |       €36,36 |
-| [**ESP32-C3-DevKitC-02**](https://www.digikey.be/nl/products/detail/espressif-systems/ESP32-C3-DEVKITC-02/14553009)                                                                                                                |    1     |      €7,12 |
-| [**stappenmotor**](https://www.pololu.com/product/1200l)                                                                                                                                                                             |    2    |       €25,63 |
-| [**verwarmingselement**](https://www.brico.be/nl/tuin-terras-buitenleven/terrasverwarming/terrasverwarmers-accessoires/terrasverwarmers/vonroc-heater-marsili-compact-2000w-zwart/10138731#specs)                                                                                                                                                                                    |    1     |        €41,28 |
-| [**level shifter**](https://www.kiwi-electronics.com/nl/sparkfun-logic-level-converter-bi-directional-3154?country=BE&gad_source=1&gclid=CjwKCAjw68K4BhAuEiwAylp3kt7vck5a6xNAdQXR4uiNX7ktb2c63guU_YwqHTPJBu4vWqOJ1PuHGRoCmoIQAvD_BwE)                                                                                                                                                                                |    1     |        €3,51 |
-| [**Omvormer 230-5**](https://www.conrad.be/nl/p/mean-well-rs-50-5-schakelnetvoedingsmodule-5-v-dc-10-a-50-w-1297303.html?cq_src=google_ads&cq_cmp=40589428&cq_term=mean+well+rs-50-5&cq_plac=&cq_net=g&cq_plt=gp&adcampaign=google&tid=40589428_140876950727_kwd-547842379393&gad_source=1&gclid=Cj0KCQjwyL24BhCtARIsALo0fSDuCaDh2ffTkAbUqMfxnU9p9Hiimt1URVC2o9y4NEF36lzJeEPr_NQaAln_EALw_wcB)                                     |    1     |       €14,04 |
-| [**Smart plug**](https://www.hubo.be/nl/p/wiz-smart-plug-stekker/943560/?srsltid=AfmBOop1jMLLTrlQRWXBZI4sboYYit9EBC_hZCbBdXXBF2tYZz2Lpcub)                                                                                                                                                                                 |    1     |        €13,21 |
-| [**Stappenmotordriver**](https://www.conrad.be/nl/p/joy-it-sbc-md-tb6600-stappenmotordriver-2999126.html?refresh=true)                                                                                                                                                                                 |    1     |        €19,83 |
-| [**voeding driver**](https://www.conrad.be/nl/p/mean-well-uhp-200r-36-schakelnetvoedingsmodule-36-v-dc-5-6-a-201-6-w-2237833.html)                                                                                                                                                                                 |    1     |        €54,54 |
+The final code can be found [here](../Code/TotalCode/TotalCode.ino).
 
-## Architecture documents
 
-### Hardware architecture diagram
-
-![Architectuur_Doc](./images/Architectuur_doc.png)
 
 ### Electrical diagram
 

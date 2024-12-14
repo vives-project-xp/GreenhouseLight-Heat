@@ -17,4 +17,15 @@ void loop() {
   }
 
   delay(2000);  // Pauze van 2 seconden
+
+    digitalWrite(DIR_PIN, HIGH);  // Draairichting vooruit instellen
+
+  for (int i = 0; i < 200; i++) {
+    digitalWrite(STEP_PIN, HIGH);
+    delay(10);  // Snelheid verhogen, kleiner delay
+    digitalWrite(STEP_PIN, LOW);
+    delay(10);
+  }
+
+  delay(2000);
 }
