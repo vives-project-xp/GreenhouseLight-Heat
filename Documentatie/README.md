@@ -33,7 +33,7 @@ Now u shoud be abled to send the data to ur ESP.
 The final code can be found [here](../Code/TotalCode/TotalCode.ino).
 
 ### HTML page
-Last minute we also put a small HTML page on our ESP , so we can change the wanted temprature in the serre withour needing to touch the ESP. If u want to add the HTML page aswell [its this code](../Code/TotalCode/TotalCodeWithHTML/TotalCodeWithHTML.ino) 
+Last minute we also put a small HTML page on our ESP , so we can change the wanted temprature in the serre without needing to touch the ESP. If u want to add the HTML page aswell [its this code](../Code/TotalCode/TotalCodeWithHTML/TotalCodeWithHTML.ino) 
 
 
 
