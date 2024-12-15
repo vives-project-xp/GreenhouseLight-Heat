@@ -4,9 +4,30 @@
 #include <FastLED.h>
 #include <WiFiUdp.h> // Voor UDP communicatie
 
+// Hieronder vind je de gewenste temp en brightness in de serre 
+
+// De temperatuur waarbij de schaduw automatisch opent om de serre te beschermen tegen oververhitting.
+int OpenShadeAtTemp = 30;  
+
+// De temperatuur waarbij de schaduw automatisch sluit als het weer koeler wordt.
+int CloseShadeAtTemp = 25; 
+
+// De lichtintensiteit (in sensorwaarden) waarbij de LED-verlichting begin sterker te worden.
+int minValueIdealBrightness = 200;  
+
+// De lichtintensiteit (in sensorwaarden) waarbij de LED-verlichting dimt om overbelichting te voorkomen.
+int maxValueIdealBrightness = 700;  
+
+// De temperatuur waarbij de kachel automatisch aan gaat om de serre te verwarmen.
+int TurnOnHeater = 20;  
+
+// De temperatuur waarbij de kachel automatisch uit gaat als het warm genoeg is.
+int TurnOffHeater = 25;
+
+
 // Stepper instellen
-#define STEP_PIN 4  // GPIO4 voor PUL+
-#define DIR_PIN 5    // GPIO5 voor DIR+
+#define STEP_PIN 4  // GPIO voor PUL+
+#define DIR_PIN 5    // GPIO voor DIR+
 
 // Wi-Fi-instellingen
 const char* ssid = "devbit";       // Wi-Fi SSID
@@ -21,14 +42,14 @@ const int udpPort = 38899;
 
 // Variabelen om ontvangen gegevens op te slaan
 long long temperature = -1; // Begin met een ongeldige waarde
-long long brightnessSensor = 128; // Standaard helderheid
+long long brightnessSensor = 500; // Standaard helderheid
 int brightnessLEDS = 0;
 
 bool ShadeIsOpen = false;   // als true = schaduw is er over de serre
 
 // LED-instellingen
-#define NUM_LEDS 144
-#define DATA_PIN 2
+#define NUM_LEDS 144    // stell het aantal leds in van je ledstri
+#define DATA_PIN 2      // stell de pin in van de data naar je leds
 CRGB leds[NUM_LEDS];
 
 void setup() {
@@ -114,23 +135,23 @@ void handleSensorData() {
 
 void fixHeat(){
     // Controleer of de temperatuur onder de 20 graden is
-    if (temperature < 20) {
+    if (temperature < TurnOnHeater) {
       Serial.println("Temperature below 20°C: Turning smart plug ON");
       sendWiZCommand(true); // Zet de smartplug aan
-    } else if(temperature>25) {
+    } else if(temperature>TurnOffHeater) {
       Serial.println("Temperature 20°C or above: Turning smart plug OFF");
       sendWiZCommand(false); // Zet de smartplug uit
     }
-    if (temperature>30 && ShadeIsOpen == false) {
+    if (temperature>OpenShadeAtTemp && ShadeIsOpen == false) {
       OpenShade();
-    } else if(temperature<25 && ShadeIsOpen == true){
+    } else if(temperature<CloseShadeAtTemp && ShadeIsOpen == true){
       CloseShade();
     }
 }
 
 
 void fixLight(){
-   if (brightnessSensor < 270) {
+   if (brightnessSensor < minValueIdealBrightness) {
       if (brightnessLEDS >= 235)
       {
         brightnessLEDS = 255;
@@ -142,7 +163,7 @@ void fixLight(){
       Serial.print("LEDs more light +10 they are now:");
       Serial.println(brightnessLEDS);
     } 
-    else if (brightnessSensor > 700) {
+    else if (brightnessSensor > maxValueIdealBrightness) {
       if (brightnessLEDS <= 20)
       {
         brightnessLEDS = 0;
