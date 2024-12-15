@@ -79,6 +79,10 @@ void setup() {
 void handleRoot() {
   char buffer[2048];
   snprintf(buffer, sizeof(buffer), R"rawliteral(
+  <head>
+    <title>Instellingen aanpassen</title>
+    <meta charset="UTF-8">
+  </head>
     <h1>Pas de waarden aan</h1>
     <form action="/save" method="POST">
         <label for="OpenShadeAtTemp">Open Shade At Temp(°C):</label>
