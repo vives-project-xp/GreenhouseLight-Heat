@@ -5,8 +5,8 @@
 #include <WiFiUdp.h>  // For UDP communication
 
 // Wi-Fi credentials
-const char* ssid = "telenet-9FB96";
-const char* password = "Rtpkfe3Vb4yd";
+const char* ssid = "devbit";
+const char* password = "Dr@@dloos!";
 
 // Web server
 WebServer server(80);
@@ -19,6 +19,11 @@ int minValueIdealBrightness = 200;
 int maxValueIdealBrightness = 700;
 int TurnOnHeater = 20;
 int TurnOffHeater = 25;
+
+// kleur instellen
+int Rood = 255;
+int groen = 0;
+int blauw = 255;
 
 #define STEP_PIN 4  // GPIO for STEP+
 #define DIR_PIN 5   // GPIO for DIR+
@@ -71,41 +76,54 @@ void setup() {
 
   // Set up initial LED state
   for (int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = CRGB(255, 255, 0);  // Purple
+    leds[i] = CRGB(Rood, blauw, groen);  // Rood Blauw Groen
   }
   FastLED.show();
 }
 
 void handleRoot() {
   char buffer[2048];
-  snprintf(buffer, sizeof(buffer), R"rawliteral(
-  <head>
+snprintf(buffer, sizeof(buffer), R"rawliteral(
+<head>
     <title>Instellingen aanpassen</title>
     <meta charset="UTF-8">
-  </head>
-    <h1>Pas de waarden aan</h1>
-    <form action="/save" method="POST">
-        <label for="OpenShadeAtTemp">Open Shade At Temp(°C):</label>
-        <input type="number" id="OpenShadeAtTemp" name="OpenShadeAtTemp" value="%d"><br>
+</head>
+<h1>Pas de waarden aan</h1>
+<form action="/save" method="POST">
+    <label for="OpenShadeAtTemp">Open Shade At Temp(°C):</label>
+    <input type="number" id="OpenShadeAtTemp" name="OpenShadeAtTemp" value="%d"><br>
 
-        <label for="CloseShadeAtTemp">Close Shade At Temp(°C):</label>
-        <input type="number" id="CloseShadeAtTemp" name="CloseShadeAtTemp" value="%d"><br>
+    <label for="CloseShadeAtTemp">Close Shade At Temp(°C):</label>
+    <input type="number" id="CloseShadeAtTemp" name="CloseShadeAtTemp" value="%d"><br>
 
-        <label for="minValueIdealBrightness">Min Value Ideal Brightness:</label>
-        <input type="number" id="minValueIdealBrightness" name="minValueIdealBrightness" value="%d"><br>
+    <label for="minValueIdealBrightness">Min Value Ideal Brightness:</label>
+    <input type="number" id="minValueIdealBrightness" name="minValueIdealBrightness" value="%d"><br>
 
-        <label for="maxValueIdealBrightness">Max Value Ideal Brightness:</label>
-        <input type="number" id="maxValueIdealBrightness" name="maxValueIdealBrightness" value="%d"><br>
+    <label for="maxValueIdealBrightness">Max Value Ideal Brightness:</label>
+    <input type="number" id="maxValueIdealBrightness" name="maxValueIdealBrightness" value="%d"><br>
 
-        <label for="TurnOnHeater">Turn On Heater(°C):</label>
-        <input type="number" id="TurnOnHeater" name="TurnOnHeater" value="%d"><br>
+    <label for="TurnOnHeater">Turn On Heater(°C):</label>
+    <input type="number" id="TurnOnHeater" name="TurnOnHeater" value="%d"><br>
 
-        <label for="TurnOffHeater">Turn Off Heater(°C):</label>
-        <input type="number" id="TurnOffHeater" name="TurnOffHeater" value="%d"><br>
+    <label for="TurnOffHeater">Turn Off Heater(°C):</label>
+    <input type="number" id="TurnOffHeater" name="TurnOffHeater" value="%d"><br>
 
-        <button type="submit">Opslaan</button>
-    </form>
-  )rawliteral", OpenShadeAtTemp, CloseShadeAtTemp, minValueIdealBrightness, maxValueIdealBrightness, TurnOnHeater, TurnOffHeater);
+    <label for="Rood">Rood (0-255):</label>
+    <input type="number" id="Rood" name="Rood" value="%d"><br>
+
+    <label for="groen">Groen (0-255):</label>
+    <input type="number" id="groen" name="groen" value="%d"><br>
+
+    <label for="blauw">Blauw (0-255):</label>
+    <input type="number" id="blauw" name="blauw" value="%d"><br>
+
+    <button type="submit">Opslaan</button>
+</form>
+)rawliteral",
+  OpenShadeAtTemp, CloseShadeAtTemp,
+  minValueIdealBrightness, maxValueIdealBrightness,
+  TurnOnHeater, TurnOffHeater,
+  Rood, groen, blauw);
 
   server.send(200, "text/html", buffer);
 }
@@ -129,6 +147,21 @@ void handleSave() {
   if (server.hasArg("TurnOffHeater")) {
     TurnOffHeater = server.arg("TurnOffHeater").toInt();
   }
+  if (server.hasArg("Rood")) {
+    Rood = server.arg("Rood").toInt();
+  }
+  if (server.hasArg("groen")) {
+    groen = server.arg("groen").toInt();
+  }
+  if (server.hasArg("blauw")) {
+    blauw = server.arg("blauw").toInt();
+  }
+
+  // Update LEDs with new color
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGB(Rood, blauw, groen);  // Update LED colors
+  }
+  FastLED.show();
 
   Serial.println("Nieuwe waarden ontvangen:");
   Serial.print("OpenShadeAtTemp: "); Serial.println(OpenShadeAtTemp);
@@ -137,9 +170,13 @@ void handleSave() {
   Serial.print("maxValueIdealBrightness: "); Serial.println(maxValueIdealBrightness);
   Serial.print("TurnOnHeater: "); Serial.println(TurnOnHeater);
   Serial.print("TurnOffHeater: "); Serial.println(TurnOffHeater);
+  Serial.print("Rood: "); Serial.println(Rood);
+  Serial.print("groen: "); Serial.println(groen);
+  Serial.print("blauw: "); Serial.println(blauw);
 
   server.send(200, "text/html", "<h1>Instellingen opgeslagen!</h1><a href='/'>Ga terug</a>");
 }
+
 
 void handleSensorData() {
   StaticJsonDocument<200> doc;
@@ -250,6 +287,7 @@ void CloseShade(){
     digitalWrite(STEP_PIN, LOW);
     delayMicroseconds(1000);
   }
+  digitalWrite(DIR_PIN, LOW);  // Draairichting vooruit instellen
 }
 
 void loop() {

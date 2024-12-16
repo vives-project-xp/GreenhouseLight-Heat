@@ -16,7 +16,8 @@ void loop() {
     delay(10);
   }
 
-  delay(2000);  // Pauze van 2 seconden
+
+
 
     digitalWrite(DIR_PIN, HIGH);  // Draairichting vooruit instellen
 

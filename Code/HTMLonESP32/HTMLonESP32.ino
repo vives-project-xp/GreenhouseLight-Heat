@@ -2,8 +2,8 @@
 #include <WiFi.h>
 
 // Wi-Fi instellingen
-const char* ssid = "telenet-9FB96";       // Wi-Fi SSID
-const char* password = "Rtpkfe3Vb4yd";   // Wi-Fi wachtwoord
+const char* ssid = "devbit";       // Wi-Fi SSID
+const char* password = "Dr@@dloos!";   // Wi-Fi wachtwoord
 
 // Webserver object
 WebServer server(80);
