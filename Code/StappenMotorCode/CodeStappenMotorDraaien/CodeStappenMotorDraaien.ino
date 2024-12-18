@@ -7,7 +7,8 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(DIR_PIN, LOW);  // Draairichting vooruit instellen
+  digitalWrite(DIR_PIN, LOW
+  );  // Draairichting vooruit instellen
 
   for (int i = 0; i < 200; i++) {
     digitalWrite(STEP_PIN, HIGH);
