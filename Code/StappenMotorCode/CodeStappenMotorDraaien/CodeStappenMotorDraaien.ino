@@ -15,18 +15,5 @@ void loop() {
     digitalWrite(STEP_PIN, LOW);
     delay(10);
   }
-
-
-
-
-    digitalWrite(DIR_PIN, HIGH);  // Draairichting vooruit instellen
-
-  for (int i = 0; i < 200; i++) {
-    digitalWrite(STEP_PIN, HIGH);
-    delay(10);  // Snelheid verhogen, kleiner delay
-    digitalWrite(STEP_PIN, LOW);
-    delay(10);
-  }
-
   delay(2000);
 }
